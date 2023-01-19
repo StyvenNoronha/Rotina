@@ -1,17 +1,30 @@
 const form = document.querySelector("form")
 const nlwSetup = new NLWSetup(form)
+const button = document.querySelector(" header button")
 
-const data = {
-  run: ["01-01", "01-20", "01-06"],
-  food:["01-01","01-18","01-21"],
-  water:["01-19"]
+button.addEventListener("click", add)
+form.addEventListener('change', save)
+function add() {
+  const today = new Date().toLocaleDateString('pt-br').slice(0,-5)
+
+  const dayExists = nlwSetup.dayExists(today)
+
+  if (dayExists) {
+    alert("dia já incluso")
+    return
+  }
+  alert("Adicionado com sucesso")
+  nlwSetup.addDay(today)
 }
 
-nlwSetup.addDay('18/01')
-nlwSetup.addDay("19/01")
-nlwSetup.addDay("20/01")
-nlwSetup.addDay("21/01")
-nlwSetup.addDay("21/01")
+function save (){
+  localStorage.setItem('styven@habitos', JSON.stringify(nlwSetup.data))
+  
+}
+
+const data = JSON.parse(localStorage.getItem("styven@habitos")) || {}
+
+
 
 nlwSetup.setData(data)
 nlwSetup.load()
